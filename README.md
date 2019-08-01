@@ -13,13 +13,13 @@ Bodhi Portal 是由杭州无远信息技术有限公司负责开发的开源免�
 ### 效果图
 
 - 首页图解
-![](https://forum-assets.enhancer.io/00/portal-4.png?t=123)
+![首页图解](./docs/portal-4.png)
 
 - 首页内访问子系统效果图
-![](https://forum-assets.enhancer.io/00/portal-1.png)
+![首页内访问子系统效果图](./docs/portal-1.png)
 
 - 移动端首页
-![](https://forum-assets.enhancer.io/00/portal-3.png?t=123)
+![移动端首页](./docs/portal-3.png)
 
 ## 如何使用并部署
 - [GNU/Linux/Mac 环境下部署文档](./docs/deploy_gnu.md)
