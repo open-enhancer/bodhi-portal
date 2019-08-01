@@ -1,0 +1,14 @@
+repository
+node_modules
+.DS_Store
+npm-debug.log
+widget
+widget/*
+logs
+*.zip
+redis/
+*.tar.gz
+assets/pages
+console
+test
+assets/node_modules

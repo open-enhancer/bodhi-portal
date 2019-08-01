@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+var path = require('path');
+var fs = require('fs');
+
+var systemConfig = require('../config/system');
+var loggerSettings = systemConfig.logger;
+
+var logDir = path.resolve(__dirname, '../logs');
+if ( !fs.existsSync( logDir ) ) {
+    fs.mkdirSync( logDir );
+}
+var log4js = require('log4js');
+
+log4js.configure( {
+    appenders: [
+        {
+            type: 'console'
+        }, {
+            type: 'dateFile',
+            filename: logDir + '/app.log',
+            category: ['app', 'console'],
+            pattern: "-yyyy-MM-dd",
+            backups: loggerSettings.app.level || 7
+        }, {
+            type: 'dateFile',
+            filename: logDir + '/user.log',
+            category: 'user',
+            pattern: "-yyyy-MM-dd",
+            backups: loggerSettings.user.level || 7
+        }
+    ],
+    replaceConsole: true
+});
+
+logger = log4js.getLogger('user');
+logger.setLevel(loggerSettings.user.level);
+
+logger = log4js.getLogger('app');
+logger.setLevel(loggerSettings.app.level);
+
+var graceful = require('graceful');
+
+var app = require('../app');
+app.set('port', systemConfig.port || process.env.PORT || 5300);
+var server = app.listen(app.get('port'), function() {
+    console.log('Bodhi portal listening on port ' + server.address().port);
+    console.log('Bodhi portal 服务监听在端口 ' + server.address().port);
+    console.log('Visit http://localhost:' + server.address().port);
+    console.log('访问 http://localhost:' + server.address().port);
+});
+
+graceful({
+    server: server,
+    killTimeout: 30 * 1000,
+    error: function(err, throwErrorCount) {
+        if (err.message) {
+            err.message +=
+                ' (uncaughtException throw ' + throwErrorCount +
+                ' times on pid:' + process.pid + ')';
+        }
+        logger.error(err);
+    }
+});

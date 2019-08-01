@@ -1,0 +1,98 @@
+<div class="portal-header-handle ui-state-default">
+    <i class="fas fa-angle-double-up"></i>
+</div>
+<div class="portal-header {{header.class}}">
+    {{#if header.logoUrl}}
+    <img class="portal-logo" src="{{header.logoUrl}}">
+    {{/if}}
+    <div class="portal-title">
+        {{header.title}}
+        <span class="portal-home-button ui-widget-content"><i class="fa fa-home"></i>首页</span>
+    </div>
+    <div class="portal-curr-app-title">
+        <i class="portal-back-home fa fa-home">{{locale.home}}</i>
+        <i class="fa fa-angle-right"></i>
+        <span class="portal-curr-app-name"></span>
+    </div>
+    <ul class="portal-app-tabs"></ul>
+    <div class="portal-toolbar">
+        <span class="portal-logout" title="{{locale.logout}}">
+            <i class="fas fa-sign-out-alt"></i>
+        </span>
+        {{#if header.themeSelector}}
+        <span class="portal-theme-switch" title="{{locale.themeSet}}">
+            <i class="fas fa-paint-brush"></i>
+        </span>
+        {{/if}}
+        {{#toolbar}}
+            <span class="portal-line float-right">|</span>
+            {{#buttons}}
+            <span class="portal-tool" title="{{title}}" action-url="{{actionUrl}}">
+                <i class="{{icon}}"></i>
+                {{#name}}
+                <label>{{this}}</label>
+                {{/name}}
+            </span>
+            {{/buttons}}
+        {{/toolbar}}
+    </div>
+    
+    {{#userInfo}}
+    <div class="portal-userinfo" action-url="{{actionUrl}}">
+        <img class="portal-avatar" src="{{avatar}}">
+        <a class="portal-user-name" title="ID: {{id}}">{{name}}</a>
+        {{#additional}}
+        <span class="portal-line">|</span>
+        <div class="portal-user-additional">{{this}}</div>
+        {{/additional}}
+    </div>
+    {{/userInfo}}
+</div>
+<div class="portal-content ui-widget-content">
+    {{#if apps.list.length}}
+    <div class="portal-apps {{apps.class}}">
+        <div class="portal-apps-title"><i class="fab fa-app-store"></i>{{apps.title}}</div>
+        <div class="portal-apps-container {{apps.listStyle}}">
+            {{#apps.list}}
+            <div class="portal-app" id="app-{{id}}" app-id="{{id}}" app-url="{{url}}" mode="{{openMode}}">
+                <div class="portal-app-icon {{class}}" title="{{title}}" style="{{#if img}}background-image: url('{{img}}');{{/if}}">
+                    {{#if icon}}
+                    <i class="{{icon}}"></i>
+                    {{else if img}}
+                    {{else}}
+                    <i class="fa fa-cog"></i>
+                    {{/if}}
+                </div>
+                <div class="portal-app-des">
+                    <div class="portal-app-name">{{name}}</div>
+                    <div class="portal-app-title">{{title}}</div>
+                </div>
+            </div>
+            {{/apps.list}}
+        </div>
+    </div>
+    {{/if}}
+    {{#if modules.list.length}}
+    <div class="portal-modules">
+        {{#modules}}
+        {{#list}}
+        <div class="portal-module" style="{{#height}}height:{{this}};{{/height}}
+            {{#unless ../../isSmallScreen}}
+            {{#width}}width:{{this}};{{/width}}margin-right: {{../moduleSpacing}}px;
+            {{/unless}}">
+            <iframe src="{{url}}"></iframe>
+        </div>
+        {{/list}}
+        {{/modules}}
+    </div>
+    {{/if}}
+</div>
+<div class="app-container"></div>
+<div class="portal-bottom ui-widget-content">{{bottom.text}}
+    <div class="powered-by ui-state-highlight">
+        Powered by
+        <div class="logo" onclick="window.open('https://enhancer.io')">
+             <span></span><c>nhancer 3.1</c>
+        </div>
+    </div>
+</div>

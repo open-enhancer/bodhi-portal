@@ -1,0 +1,29 @@
+<div class="project-title ui-widget-content">
+    <img class="logo" src="{{{logoUrl}}}">
+    {{{title}}}
+</div>
+<div class="ui-widget-content login">
+    <form class="login-form">
+        <span class="login-title"><i class="fas fa-lock"></i>{{locale.login}}</span>
+        <div class="line">
+            <label class="label fas fa-user ui-widget-content"></label>
+            <input class="ui-widget-content uid" type="text" placeholder="{{locale.userLoginAcc}}">
+        </div>
+        <div class="line">
+            <label class="label fas fa-key ui-widget-content"></label>
+            <input class="ui-widget-content pwd" type="password" placeholder="{{locale.password}}">
+        </div>
+        <div class="line veri-code-line">
+            <label class="label refresh-code fas fa-sync ui-widget-content" title="{{locale.clickToRefresh}}">
+            </label>
+            <img class="captcha ui-widget-content" alt="888888" title="{{locale.clickToRefresh}}">
+            <input class="ui-widget-content code" type="text" placeholder="{{locale.veriCode}}">
+        </div>
+        <div class="tips" class="ui-corner-all" ></div>
+        <a class="login-btn">{{locale.login}}</a>
+    </form>
+</div>
+<div class="ui-state-default bg-mask"></div>
+{{#unless noFrame}}
+<div class="ui-widget-content login-bg"></div>
+{{/unless}}

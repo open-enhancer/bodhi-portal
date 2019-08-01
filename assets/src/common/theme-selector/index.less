@@ -1,0 +1,171 @@
+.theme-selector {
+    z-index: 10000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding-bottom: 24px;
+    margin-top: -218px;
+    margin-left: -336px;
+    display: none;
+    .header {
+        margin-top: 6px;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        i {
+            margin: 0 8px 0 20px;
+        }
+        i.fa-times {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    }
+    .theme-list {
+        display: inline-block;
+        list-style: none;
+        width: 630px;
+        height: 368px;
+        padding: 0;
+        margin: 0 20px;
+        background-image: url('./theme-selector.png');
+        background-repeat: no-repeat;
+        border-radius: 4px;
+        background-position: 6px 6px;
+        li {
+            float: left;
+            width: 105px;
+            height: 92px;
+            cursor: pointer;
+            background: none;
+            padding: 1px;
+            box-sizing: border-box;
+        }
+        li.ui-state-active {
+            padding: 0px;
+            border-width: 2px;
+        }
+    }
+}
+.theme-selector-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background: #111;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+@media screen and (max-width: 720px) {
+    .theme-selector {
+        top: 0;
+        left: 0;
+        margin-top: 0;
+        margin-left: 0;
+        height: 100%;
+        .theme-list {
+            background: none;
+            position: relative;
+            border: none;
+            z-index: 2;
+            width: 200px;
+            display: inline-block;
+            list-style: none;
+            height: calc(~"100% - 48px");
+            box-sizing: border-box;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 8px;
+            margin: 0;
+            position: relative;
+            text-align: center;
+            li {
+                display: inline-block;
+                width: 84px;
+                height: 75px;
+                margin: 4px;
+                cursor: pointer;
+                background: none;
+                background: url('./theme-selector.png');
+                background-repeat: no-repeat;
+                background-size: 720%;
+            }
+            li.redmond {
+                background-position: -1px 0;
+            }
+            li.trontastic {
+                background-position: -105px -1px;
+            }
+            li.ui-darkness {
+                background-position: -207px -1px;
+            }
+            li.start {
+                background-position: -311px -1px;
+            }
+            li.mint-choc {
+                background-position: -415px -1px;
+            }
+            li.blitzer {
+                background-position: -519px -2px;
+            }
+            li.base {
+                background-position: -1px -92px;
+            }
+            li.vader {
+                background-position: -105px -92px;
+            }
+            li.black-tie {
+                background-position: -207px -92px;
+            }
+            li.sunny {
+                background-position: -311px -92px;
+            }
+            li.overcast {
+                background-position: -415px -92px;
+            }
+            li.dot-luv {
+                background-position: -519px -92px;
+            }
+            li.pepper-grinder {
+                background-position: -1px -183px;
+            }
+            li.swanky-purse {
+                background-position: -105px -183px;
+            }
+            li.ui-lightness {
+                background-position: -207px -183px;
+            }
+            li.south-street {
+                background-position: -311px -183px;
+            }
+            li.le-frog {
+                background-position: -415px -183px;
+            }
+            li.dark-hive {
+                background-position: -519px -183px;
+            }
+            li.humanity {
+                background-position: -1px -276px;
+            }
+            li.hot-sneaks {
+                background-position: -105px -276px;
+            }
+            li.flick {
+                background-position: -207px -276px;
+            }
+            li.excite-bike {
+                background-position: -311px -276px;
+            }
+            li.eggplant {
+                background-position: -415px -276px;
+            }
+            li.cupertino {
+                background-position: -519px -276px;
+            }
+        }
+        border-top: none;
+        border-left: none;
+        border-bottom: none;
+    }
+}
