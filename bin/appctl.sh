@@ -18,6 +18,9 @@ ACTION=$1
 
 start() {
   PORT=`cat ${BASE_HOME}/config/system.js | grep 'port:' | tr -d "port\:\ \,\""`
+  arr=($PORT)
+  PORT=${arr[0]}
+
   STATUS_URL=http://127.0.0.1:$PORT/__status
   STATUS=`curl --silent $STATUS_URL`
   if [ "$STATUS" == "OK" ]; then
