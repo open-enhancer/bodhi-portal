@@ -22,21 +22,21 @@ Bodhi Portal 是由[杭州无远信息技术有限公司](https://enhancer.io)�
 ![移动端首页](./docs/portal-3.png)
 
 ## 如何使用并部署
-- [GNU/Linux/Mac 环境下部署文档](./docs/deploy_gnu.md)
-- [Windows 环境下部署文档](./docs/deploy_win.md)
+- [GNU/Linux/Mac 环境下部署文档](https://enhancer.io/tutorials-portal)
+- [Windows 环境下部署文档](https://enhancer.io/tutorials-portal)
 
 ## 子系统如何接入门户
-- [子系统接入文档](./docs/how_to_access_portal.md)
+- [子系统接入文档](https://enhancer.io/tutorials-portal)
 
 ## 配置文件详解
 
-- [config/system.js (系统配置文件)](./docs/config_system.md)
-- [config/front_home.js (主页前端配置文件)](./docs/config_front_home.md)
-- [config/front_login.js (登录页前端配置文件)](./docs/config_front_login.md)
-- [config/login.js (自定义登录函数文件)](./docs/config_login.md)
-- [config/logout.js (自定义登出函数文件)](./docs/config_logout.md)
+- [config/system.js (系统配置文件)](https://enhancer.io/tutorials-portal)
+- [config/front_home.js (主页前端配置文件)](https://enhancer.io/tutorials-portal)
+- [config/front_login.js (登录页前端配置文件)](https://enhancer.io/tutorials-portal)
+- [config/login.js (自定义登录函数文件)](https://enhancer.io/tutorials-portal)
+- [config/logout.js (自定义登出函数文件)](https://enhancer.io/tutorials-portal)
 
-# [API](./docs/api.md)
+# [API](https://enhancer.io/tutorials-portal)
 
 
 
