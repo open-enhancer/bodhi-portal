@@ -119,7 +119,7 @@ app.use(function(req, res, next) {
 // Check if the redis server is connected normally.
 app.use(function(req, res, next) {
     if (!req.session) {
-        var err = new Error(req.locale('redisConnErr', {port: redisConf.port}));
+        var err = new Error(req.locale('redisConnErr', {port: systemConfig.redis.port}));
         err.status = 500;
         return next(err);
     }

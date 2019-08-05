@@ -18,7 +18,7 @@
 - 其他配置文件根据需要修改，默认可以不改。
 
 #### 第五步 启动项目
-- 打开 Windows Power Shell（或者 cmd 命令窗口）， 进入`bodhi-portal`根目录，执行指令：``./bin/appctl.sh start``。
+- 打开 Windows Power Shell（或者 cmd 命令窗口）， 进入`bodhi-portal`根目录，执行指令：``node ./bin/start``。
 
 【说明】Windows 环境下，启动窗口需要一直存在才能保证应用正常服务。如果希望以 Windows 服务的形式开机启动应用，参考文章：[https://forum.enhancer.io/topic/5b11013535e3f84ea8dd872f](https://forum.enhancer.io/topic/5b11013535e3f84ea8dd872f)
 
