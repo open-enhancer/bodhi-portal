@@ -38,6 +38,28 @@ logger.setLevel(loggerSettings.user.level);
 logger = log4js.getLogger('app');
 logger.setLevel(loggerSettings.app.level);
 
+var consoleError = console.error;
+console.error = function(err) {
+    if (err instanceof Error) {
+        var msg = err.message + '\n' + err.stack;
+        arguments[0] = msg;
+        consoleError.apply(this, arguments);
+        return;
+    }
+    consoleError.apply(this, arguments);
+}
+
+var loggerError = logger.error;
+logger.error = function(err) {
+    if (err instanceof Error) {
+        var msg = err.message + '\n' + err.stack;
+        arguments[0] = msg;
+        loggerError.apply(this, arguments);
+        return;
+    }
+    loggerError.apply(this, arguments);
+}
+
 var graceful = require('graceful');
 
 var app = require('../app');
