@@ -13,13 +13,13 @@ Bodhi Portal 是由[杭州无远信息技术有限公司](https://wuyuan.io)负�
 ### 效果图
 
 - 首页图解
-![首页图解](https://forum-assets.wuyuan.io/00/portal-11.png)
+![首页图解](./docs/portal-11.png)
 
 - 首页内访问子系统效果图
-![首页内访问子系统效果图](https://forum-assets.wuyuan.io/00/portal-22.png)
+![首页内访问子系统效果图](./docs/portal-22.png)
 
 - 移动端首页
-![移动端首页](https://forum-assets.wuyuan.io/00/portal-33.png)
+![移动端首页](./docs/portal-33.png)
 
 ## 如何使用并部署
 - [GNU/Linux/Mac 环境下部署文档](https://wuyuan.io/tutorials-portal)
