@@ -7,11 +7,11 @@
       "connections": {
         "__default__": {
           "databaseType": "mysql",
-          "host": "115.28.48.117",
+          "host": "127.0.0.1",
           "port": "3306",
-          "database": "widget_usage",
+          "database": "my_db",
           "user": "zyz",
-          "password": "passw0rd",
+          "password": "123456",
           "acquireTimeout": "1000",
           "connectionLimit": "100",
           "queueLimit": "20"
