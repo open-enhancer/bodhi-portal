@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'xxx',
+    name: 'XX 统一信息门户',
     firstLevelDomain: 'site.com',
     port: 5300,
     defaultLang: 'zh-cn',

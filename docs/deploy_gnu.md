@@ -9,14 +9,15 @@
 - 执行 ``cd redis-4.0.8 & make`` 进入解压根目录并且编译。
 - 执行 ``./src/redis-server --port 57192``启动 Redis 服务。
 
-#### 第三步 下载源码解压并安装
+#### 第三步 下载或克隆源码解压并安装
+- 源码地址：[https://github.com/open-enhancer/bodhi-portal](https://github.com/open-enhancer/bodhi-portal)
 - 执行 ``unzip bodhi-portal.zip``。
 - 执行 ``cd bodhi-portal`` 进入应用根目录
 - 执行 ``npm install`` 安装 Node.js 模块依赖。<br>如您在国内网络慢可使用国内镜像安装: ``npm install --registry=https://r.cnpmjs.org/``
 
-#### 第四步 配置项目
-- 修改 config/system.js 配置文件，完成所有【必需】配置。[参考文档](./config_system.md)
-- 修改 config/front_login.js 配置文件，完成所有【必需】配置。[参考文档](./config_front_login.md)
+#### 第四步 配置项目<b style="color:red">(不可忽略此步骤)</b>
+- 修改 config/system.js 配置文件，<b style="color:red">完成所有必需配置</b>。[参考文档](./config_system.md)
+- 修改 config/front_login.js 配置文件，<b style="color:red">完成所有必需配置</b>。[参考文档](./config_front_login.md)
 - 其他配置文件根据需要修改，默认可以不改。
 
 #### 第五步 启动项目

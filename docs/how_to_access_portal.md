@@ -1,4 +1,4 @@
-# 子系统如何接入门户
+# 子系统接入门户方法
 
 不论子系统实现采用何种语言何种框架，都可以通过调用门户 API 来接入，步骤如下：
 
@@ -18,18 +18,18 @@
 - 第一步，在工作台->全局配置->用户登录->单点登录配置中，开启单点登录校验，贴入以下代码并根据实际情况做相关修改：
 
 ```javascript
-function (enhancer, user, done) {
+function (Enhancer, user, done) {
 
 	// 本系统部署的地址。
 	var siteUrl = 'http://app1.site.com'
     // 门户登录地址。
     var loginUrl = 'http://portal.site.com/login'
-    // 门户登录内网校验地址。
+    // 门户登录内网校验地址，由门户建设方负责提供。
     var ssoCheckUrl = 'http://xxx.xxx.xxx.xxx/api/isLoggedIn';
 
     var httpRequest = require('request');
-    var logger = enhancer.getLogger();
-    var req = enhancer.getContextRequest();
+    var logger = Enhancer.getLogger();
+    var req = Enhancer.getContextRequest();
     
     // 从 cookie 中拿到单点登录门户设置的令牌。
     var accessToken = req.cookies.access_token;
@@ -64,7 +64,13 @@ function (enhancer, user, done) {
          user.setName('兰姆达'); 				// 用户必须有名字，显示在登录状态栏。
          user.setVariable('DEPART','总经办'); 	// 其他变量根据需要设置。
          user.setVariable('DEPART_ID', 100); 	// 部门 ID。
-         
+            
+         /******
+          * 注意：result.userInfo 字段包含从门户系统中带入的用户其他信息，该信息的来源可以是门户系统中
+          * 配置的登录表，也可以是门户系统自定义登录实现过程中设置给 session.user 对象的字段。可以根据
+          * 需要，将它们设定给本系统的 user 对象作为变量使用。
+          ******/
+            
          // 标记此用户数据已经初始化完成。
          user.setVariable('IS_DATA_INITIALIZED', true); 
 
@@ -73,13 +79,13 @@ function (enhancer, user, done) {
 }
 ```
 
-- 第二步，在工作台->全局配置->用户登录->单点登录配置中，开启单点登录校验，贴入以下代码并根据实际情况做相关修改：
+- 第二步，在工作台->全局配置->用户登录->注销登录配置中，开启选项，贴入以下代码并根据实际情况做相关修改：
 
 ```javascript
-function (enhancer, user) {
+function (Enhancer, user) {
 	var httpRequest = require('request');
-    var logger = enhancer.getLogger();
-    var req = enhancer.getContextRequest();
+    var logger = Enhancer.getLogger();
+    var req = Enhancer.getContextRequest();
     
     // 从 cookie 中拿到单点登录门户设置的令牌。
     var accessToken = req.cookies.access_token;

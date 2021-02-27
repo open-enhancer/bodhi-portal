@@ -39,7 +39,9 @@
     
     {{#userInfo}}
     <div class="portal-userinfo" action-url="{{actionUrl}}">
+        {{#if avatar}}
         <img class="portal-avatar" src="{{avatar}}">
+        {{/if}}
         <a class="portal-user-name" title="ID: {{id}}">{{name}}</a>
         {{#additional}}
         <span class="portal-line">|</span>
@@ -48,7 +50,7 @@
     </div>
     {{/userInfo}}
 </div>
-<div class="portal-content ui-widget-content">
+<div class="portal-content">
     {{#if apps.list.length}}
     <div class="portal-apps {{apps.class}}">
         <div class="portal-apps-title"><i class="fab fa-app-store"></i>{{apps.title}}</div>
@@ -79,7 +81,7 @@
         <div class="portal-module" style="{{#height}}height:{{this}};{{/height}}
             {{#unless ../../isSmallScreen}}
             {{#width}}width:{{this}};{{/width}}margin-right: {{../moduleSpacing}}px;
-            {{/unless}}">
+            {{/unless}} {{style}}">
             <iframe src="{{url}}"></iframe>
         </div>
         {{/list}}

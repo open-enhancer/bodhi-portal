@@ -1,6 +1,6 @@
 module.exports = {
     layoutStyle: 'left',
-    title: 'xxxxxx',
+    title: '无远统一信息门户',
     titleFontSize: 26,
     titleFontWeight: 400,
     logoUrl: '/public/img/login-logo.png',

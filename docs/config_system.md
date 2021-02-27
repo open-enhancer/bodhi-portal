@@ -1,11 +1,13 @@
 ## 系统配置文件说明
 
+此文件负责配置系统运行的基本信息、数据库连接、登录模式、日志设置以及 Redis(session 缓存)设置。
+
 ```javascript
 module.exports = {
     /* 基础配置 */
-    name: '无远门户系统',             //【可选】系统名。
-    firstLevelDomain: 'site.com',   //【必需】本门户系统部署所在的一级域名。
+    firstLevelDomain: 'site.com',   //【必需】本门户系统部署所在的一级域名。如果没有域名，则填写 IP 地址。
     port: 5300,                     //【必需】系统启动端口。
+    name: '无远门户系统',             //【可选】系统名。
     defaultLang: 'zh-cn',           //【可选】默认语言，值可以是 zh-cn 和 en，默认 zh-cn
     sessionMaxAge: 30,              //【可选】用户会话最大时长，单位分钟，默认 30
     externalUrlBase: '',            //【可选】用户访问本门户时在浏览器输入的根地址，默认可不填写。
@@ -21,7 +23,7 @@ module.exports = {
     
     /* 数据库配置 */
     database: {
-        databaseType: 'mysql',      //【必需】 数据库类型，可以是 mysql, oracle 或者 mssql。
+        databaseType: 'mysql',      //【必需】数据库类型，可以是 mysql, oracle 或者 mssql。
         host: '127.0.0.1',          //【必需】数据库主机地址。
         port: '3306',               //【必需】端口。
         database: 'user_center',    //【必需】数据库名或实例名。

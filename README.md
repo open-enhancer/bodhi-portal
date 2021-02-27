@@ -10,16 +10,17 @@ Bodhi Portal 是由[杭州无远信息技术有限公司](https://wuyuan.io)负�
 - 一次接入自动适应 PC 端和移动端。
 - 使用过程基本只需要做配置，同时也支持二次开发。
 
-### 效果图
+## 效果图
 
-- 首页图解
-![首页图解](./docs/portal-11.png)
+### 首页图解
+![首页图解](./docs/portal-1.png)
 
-- 首页内访问子系统效果图
-![首页内访问子系统效果图](./docs/portal-22.png)
+### 首页内访问子系统效果图
+![首页内访问子系统效果图](./docs/portal-2.png)
+![首页内访问子系统效果图](./docs/portal-3.png)
 
-- 移动端首页
-![移动端首页](./docs/portal-33.png)
+### 移动端首页
+![移动端首页](./docs/portal-m-2.png)
 
 ## 如何使用并部署
 - [GNU/Linux/Mac 环境下部署文档](https://wuyuan.io/tutorials-portal)

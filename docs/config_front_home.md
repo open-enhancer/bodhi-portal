@@ -1,6 +1,8 @@
 ## 主页前端配置说明
 
-```javascript
+此文件负责主页前端的展示配置，包括顶部，底部，应用列表，窗口模块配置。
+
+```js
 module.exports = {
     /* 顶部配置 */
     header: {
@@ -18,7 +20,7 @@ module.exports = {
 
         //【可选】样式名，取值可以是 ui-state-default、ui-state-hover、ui-state-active、ui-state-higlight、
         // ui-widget-content、ui-widget-header 或者自定义样式名。参考内置样式使用说明：
-        // https://assets.enhancer.io/enhancer/tutorials/1.0.0/zh-cn/css.html
+        // https://assets.wuyuan.io/enhancer/tutorials/1.0.0/zh-cn/css.html
         class: 'ui-widget-content',
 
         //【可选】用户附加展示信息模板，显示在用户信息右侧。使用 {字段名} 来取用登录用户的属性字段（用户表中的字段
@@ -31,7 +33,7 @@ module.exports = {
         /*【可选】工具栏按钮，可配置 0 个或多个。*/
         buttons: [{
             //【必需】按钮图标，可以设置为 fontawesome 任意图标。可选图标地址：
-            // https://assets.enhancer.io/common-template/tool/all/fontawesome.html
+            // https://assets.wuyuan.io/common-template/tool/all/fontawesome.html
             icon: 'far fa-bell',
 
             title: '通知',           //【可选】按钮提示。
@@ -56,7 +58,7 @@ module.exports = {
 
         //【可选】样式名，取值可以是 ui-state-default、ui-state-hover、ui-state-active、ui-state-higlight、
         // ui-widget-content、ui-widget-header 或者自定义样式名。参考内置样式使用说明：
-        // https://assets.enhancer.io/enhancer/tutorials/1.0.0/zh-cn/css.html
+        // https://assets.wuyuan.io/enhancer/tutorials/1.0.0/zh-cn/css.html
         class: 'ui-state-default',
 
         position: 'left',                         //【可选】位置，left、right、top，默认 left。移动端无效。
@@ -73,7 +75,7 @@ module.exports = {
             id: 'app2',                           //【必需】应用 ID 号，只能由数字，字母和下划线或中划线组成。
             name: '财务',                          //【必需】应用名。
             title: '财务管理系统',                  //【可选】标题。
-            icon: 'fas fa-dollar-sign',           //【可选】应用图标。可选图标地址：https://assets.enhancer.io/common-template/tool/all/fontawesome.html
+            icon: 'fas fa-dollar-sign',           //【可选】应用图标。可选图标地址：https://assets.wuyuan.io/common-template/tool/all/fontawesome.html
             img: '',                              //【可选】背景图片地址，若配置，则不会显示图标。
             url: 'http://app1.site.com',          //【必需】应用地址 URL。 
             openMode: 'imbedded',                 //【可选】打开方式取值：imbedded(嵌入门户)、internal(外部打开)。

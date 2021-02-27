@@ -1,5 +1,7 @@
 ## 登录页配置说明
 
+此文件负责负责登录页面展示配置。
+
 ```javascript
 module.exports = {
     layoutStyle: 'left',                        //【可选】布局风格，取值可以是 left, right, center。

@@ -6,21 +6,22 @@
 #### 第二步 下载并安装 [Redis windows 版](https://github.com/MicrosoftArchive/redis/releases/download/win-3.2.100/Redis-x64-3.2.100.msi)。 [备选下载地址](https://pan.baidu.com/s/1eSLvXwI)
 - 安装时，将启动端口设置为 `57192`，安装完毕之后 Redis 会作为服务自动启动在后台。
 
-#### 第三步 第三步 下载源码解压并安装
-- 解压下载的zip包。
+#### 第三步 第三步 下载或克隆源码解压并安装
+- 源码地址：[https://github.com/open-enhancer/bodhi-portal](https://github.com/open-enhancer/bodhi-portal)
+- 解压下载的 zip 包。
 - 打开 Windows Power Shell（或者 cmd 命令窗口）， 进入`bodhi-portal`根目录。
 - 执行指令 `npm install`
 <br>如您在国内网络慢可使用国内镜像安装: ``npm install --registry=https://r.cnpmjs.org/``
 
-#### 第四步 配置项目
-- 修改 config/system.js 配置文件，完成所有【必需】配置。[参考文档](./config_system.md)
-- 修改 config/front_login.js 配置文件，完成所有【必需】配置。[参考文档](./config_front_login.md)
+#### 第四步 配置项目<b style="color:red">(不可忽略此步骤)</b>
+- 修改 config/system.js 配置文件，<b style="color:red">完成所有必需配置</b>。[参考文档](./config_system.md)
+- 修改 config/front_login.js 配置文件，<b style="color:red">完成所有必需配置</b>。[参考文档](./config_front_login.md)
 - 其他配置文件根据需要修改，默认可以不改。
 
 #### 第五步 启动项目
 - 打开 Windows Power Shell（或者 cmd 命令窗口）， 进入`bodhi-portal`根目录，执行指令：``node ./bin/start``。
 
-【说明】Windows 环境下，启动窗口需要一直存在才能保证应用正常服务。如果希望以 Windows 服务的形式开机启动应用，参考文章：[https://forum.enhancer.io/topic/5b11013535e3f84ea8dd872f](https://forum.enhancer.io/topic/5b11013535e3f84ea8dd872f)
+【说明】Windows 环境下，启动窗口需要一直存在才能保证应用正常服务。如果希望以 Windows 服务的形式开机启动应用，参考文章：[https://forum.wuyuan.io/topic/5b11013535e3f84ea8dd872f](https://forum.wuyuan.io/topic/5b11013535e3f84ea8dd872f)
 
 #### 第六步 让子系统按照要求接入门户登录
 - 参考[子系统如何接入文档](./how_to_access_portal.md)。

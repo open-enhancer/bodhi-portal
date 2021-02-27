@@ -21,7 +21,7 @@ function viewApp(appId, name, url) {
     $('.portal-content').hide();
     $('.app-view').hide();
     $('.app-container').show();
-    $('.portal-app-tabs li').removeClass('selected ui-widget-content')
+    $('.portal-app-tabs li').removeClass('selected ui-state-active')
         .addClass('ui-state-default');
     $('.portal-home-button').addClass('ui-state-default').removeClass('ui-widget-content');
 
@@ -40,13 +40,13 @@ function viewApp(appId, name, url) {
         $view.show();
         $('.portal-app-tabs li[app-id=' + appId + ']')
             .removeClass('ui-state-default')
-            .addClass('ui-widget-content selected');
+            .addClass('ui-state-active selected');
         return;
     }
     $('<li>').attr('app-id', appId)
         .attr('app-url', url)
         .append(name)
-        .addClass('ui-widget-content selected')
+        .addClass('ui-state-active selected')
         .append('<i class="fa fa-times"></i>')
         .prepend('<i class="fa fa-redo"></i>')
         .prependTo($('.portal-app-tabs'));
@@ -61,7 +61,7 @@ function viewApp(appId, name, url) {
 function showPortal() {
     $('.app-container').hide();
     $('.portal-curr-app-title').hide();
-    $('.portal-app-tabs li').removeClass('selected ui-widget-content').addClass('ui-state-default');
+    $('.portal-app-tabs li').removeClass('selected ui-active-content').addClass('ui-state-default');
     $('.portal-content').show();
     $('.portal-title').show();
     $('.portal-bottom').show();
