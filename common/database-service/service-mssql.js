@@ -267,6 +267,7 @@ class MssqlService extends BaseServiceClass {
             i++;
             return pname;
         });
+
         req.query(sql, (err, result) => {
             if (err) {
                 return cb(err);
