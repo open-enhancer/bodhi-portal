@@ -1,3 +1,11 @@
+/**
+ * Copyright © 2021 Wuyuan Info Tech Co., Ltd. All rights reserved.
+ * License: MIT
+ * Site: https://wuyuan.io
+ * Author: zyz
+ * Updated: 2020/12/30
+ **/
+
 'use strict';
 
 var BaseServiceClass = require('./service-base');
@@ -44,7 +52,7 @@ var varTypeMap = {
 };
 
 class MssqlService extends BaseServiceClass {
-    constructor(dbConfig) {
+    constructor(dbConfig, cb) {
         super(dbConfig);
         dbConfig.server = dbConfig.host;
         dbConfig.max = dbConfig.connectionLimit;
@@ -65,7 +73,12 @@ class MssqlService extends BaseServiceClass {
                 err.message = 'Failed to create database connection pool. caused by: '
                     + err.message;
                 console.error(err);
-                throw err;
+                if (typeof cb === 'function') {
+                    return cb(err);
+                }
+            }
+            if (typeof cb === 'function') {
+                cb();
             }
         });
         // Keep in touch with database.
@@ -124,17 +137,18 @@ class MssqlService extends BaseServiceClass {
         var pool = this.pool;
         var ROWS_LENGTH = 'ROWS_LENGTH';
         var countRecords = function(cb) {
-            if (!criteria.paged && !criteria.countRecords) {
+            if (!criteria.paged || !criteria.countRecords) {
                 return cb(null, ROWS_LENGTH);
             }
+            var countSql = that.getCountSql(sql, params);
 
             var req = pool.request();
 
             // input parameter
             var i = 0;
-            var countSql = sql.replace(/\?/g, function(id) {
+            countSql.sql = countSql.sql.replace(/\?/g, function(id) {
                 var pname = '@param' + i;
-                var val = params[i];
+                var val = countSql.params[i];
                 // Handle array specially for batch operations
                 if (val instanceof Array) {
                     i++;
@@ -144,10 +158,14 @@ class MssqlService extends BaseServiceClass {
                 i++;
                 return pname;
             });
-            countSql = "SELECT count(*) records FROM (" + countSql + ") A";
-            req.query(countSql, (err, result) => {
+            
+            
+            req.query(countSql.sql, (err, result) => {
                 if (err) {
                     return cb(err);
+                }
+                if (!result.recordset.length) {
+                    return cb(null, 0);
                 }
                 cb(null, result.recordset[0].records);
             });
@@ -267,7 +285,6 @@ class MssqlService extends BaseServiceClass {
             i++;
             return pname;
         });
-
         req.query(sql, (err, result) => {
             if (err) {
                 return cb(err);

@@ -1,11 +1,13 @@
-'use strict';
-
 /**
- * Database Service Base Class 
- * @created by zyz
- * @date 03/14/2017
- */
+ * Copyright © 2021 Wuyuan Info Tech Co., Ltd. All rights reserved.
+ * License: MIT
+ * Site: https://wuyuan.io
+ * Author: zyz
+ * Updated: 2020/12/30
+ * Created: 2017/03/14
+ **/
 
+'use strict';
 
 var escape = require('mysql').escape;
 var escapeId = require('mysql').escapeId;
@@ -90,7 +92,7 @@ class Service {
                 throw new Error( "The length of value of identifier is exceeded. value = '" 
                     + val + "', length = " + val.length + ", max length: 64." );
             }
-            if ( !/^\w+$/.test( val ) ) {
+            if ( !/^\w+(\.\w+)*$/.test( val ) ) {
                 throw new Error( "Invalid value injected in SQL: '" + val + "'" );
             }
             return val;
@@ -109,9 +111,11 @@ class Service {
 
         // 3. Replace JavaScript such as #@2-RESULT@.data.id + 3#, @12-IMG@.url
         // and caculate the value into params.
-        sql = sql.replace(pattern.varExp, function(expr) {
+        sql = sql.replace(/'[^']'/g, function(s) {
+                return s.replace(/#/g, '{SHARP}');
+        }).replace(pattern.varExp, function(expr) {
             var exp = expr.replace(/#/g, '');
-            exp = '(function(sv, pa){return '
+            exp = '(function(sv, pa){var __ret = '
                     + exp.replace(pattern.variable, function(ss) {
                         var name = ss.split(/\$|\@/)[1];
                         if (/^\w+(\.\w+)*$/.test(name)) {
@@ -119,8 +123,8 @@ class Service {
                         } else {
                             return ' pa["' + name.toUpperCase() + '"]';
                         }
-                    }) + '})';
-            var f, vname;
+                    }) + ';return __ret;})';
+            var f, vname, ret;
             try {
                 f = eval(exp);
             } catch(e) {
@@ -128,14 +132,21 @@ class Service {
                  + e.message);
             }
             try {
-                vname = '0-TMEP_VAR_' + Math.round(Math.random() * 10000000);
-                criteria.params[vname] = f(criteria.serverVars, criteria.params) || null;
+                vname = '0-TEMP_VAR_' + Math.round(Math.random() * 10000000);
+                ret = f(criteria.serverVars, criteria.params);
+                if (typeof ret === 'undefined') {
+                    ret = null;
+                }
+                criteria.params[vname] = ret;
             } catch(e) {
                 throw new Error('Error occured when executing '
                     + expr + '. Caused by: '+ e.message);
             }
             return '@' + vname + '@';
+        }).replace(/\{SHARP\}/g, function(s) {
+            return '#';
         });
+
 
         // 4. Replace Variables
         sql = sql.replace( pattern.variable, function( s ) {
@@ -175,7 +186,7 @@ class Service {
                     .replace(/\([^\(\)]+\)/ig, ' XXX ')
                     .replace(/\([^\(\)]+\)/ig, ' XXX ');
 
-            if ( sql2.search( /WHERE/i ) === -1  ) {
+            if ( sql2.search( /\sWHERE\s/i ) === -1  ) {
                 sql = sql + ' WHERE ' + filters;
             } else {
                 sql = sql + ' AND ( ' + filters + ' )';
@@ -253,7 +264,7 @@ class Service {
      * @return {Sting} SQL Conditions
      */
     __parseFiltersToSqlConditions(filters) {
-        if (!filters || !filters.groupOp || !filters.rules || !filters.rules.length) {
+        if (!filters || !filters.groupOp || !filters.rules) {
             return '';
         }
         var that = this;
@@ -272,11 +283,17 @@ class Service {
                 }).join(' ' + group.groupOp + ' ');
             }
             if (group.groups instanceof Array && group.groups.length) {
-                conditions = group.groups.map(function(g) {
-                                return '(' + parse(g) + ')';
-                            }).join(' ' + group.groupOp + ' ')
-                            + ' ' + group.groupOp + ' '
-                            + conditions;
+                var gcond = group.groups.map(function(g) {
+                        var c = parse(g);
+                        return c ? '(' + parse(g) + ')' : '';
+                    }).filter(function(r) {
+                        return !!r;
+                    })
+                    .join(' ' + group.groupOp + ' ');
+                if (gcond) {
+                    conditions = gcond + (conditions ? ' ' + group.groupOp + ' ' + conditions
+                                        : '');
+                }
             }
             return conditions;
         }
@@ -384,6 +401,74 @@ class Service {
                     + ')';
             default: 
                 return '';
+        }
+    }
+    getCountSql(sql, params, paramPlaceHolder) {
+        sql = sql.trim();
+        if (!sql) {
+            return;
+        }
+
+        // Eliminate nested structure.
+        var sql2 = sql.replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ')
+                .replace(/\([^\(\)]+\)/ig, ' XXX ');
+
+        if (sql2.search(/\sUNION\s/i) !== -1 || sql2.search(/\sGROUP\sBY\s/i) !== -1) {
+            return {
+                sql: "SELECT count(*) records FROM (" + sql + ") A",
+                params: params
+            }
+        }
+
+        var tag = 0;
+        var found = 0; // Mark the first FROM word is found.
+        sql2 = 'SELECT COUNT(*) records FROM ';
+        var ret = sql.replace(/SELECT\*/ig, 'SELECT *')
+            .replace(/SELECT\(/ig, 'SELECT (')
+            .replace(/FROM\(/ig, 'FROM (')
+            .split(/(\s?SELECT(\s|\(|\*))|(\sFROM(\s|\())/i)
+            .filter(function(l) {
+                return !!l;
+            });
+        ret.forEach(function(l) {
+            if (!found && /\s?SELECT(\s|\(|\*)/i.test(l)) {
+                tag++;
+            } else if (!found && /\sFROM(\s|\()/i.test(l)) {
+                tag--;
+                if (tag === 0) {
+                    found = 1;
+                }
+            } else if (found) {
+                sql2 = sql2 + (l || '');
+                return
+            }
+        });
+        
+        // Resort params.
+        paramPlaceHolder = paramPlaceHolder || '\\\?';
+        var pReg = new RegExp(paramPlaceHolder, 'g');
+        var countParams = [];
+        var num = (sql2.match(pReg) || []).length;
+        var len = params.length;
+        if (num === len) {
+            countParams = params;
+        } else {
+            for (var i = len - num; i < len; i++) {
+                countParams.push(params[i]);
+            }
+        }
+
+        return {
+            sql: sql2,
+            params: countParams
         }
     }
 };

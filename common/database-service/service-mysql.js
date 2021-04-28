@@ -1,3 +1,11 @@
+/**
+ * Copyright © 2021 Wuyuan Info Tech Co., Ltd. All rights reserved.
+ * License: MIT
+ * Site: https://wuyuan.io
+ * Author: zyz
+ * Updated: 2020/12/30
+ **/
+
 'use strict';
 
 var BaseServiceClass = require('./service-base');
@@ -47,11 +55,17 @@ var varTypeMap = {
 };
 
 class MysqlService extends BaseServiceClass {
-    constructor(dbConfig) {
+    constructor(dbConfig, cb) {
         dbConfig.timezone = dbConfig.timezone || '08:00';
+        dbConfig.charset = dbConfig.charset || 'utf8mb4';
         super(dbConfig);
         this.dbConfig = dbConfig;
         this.pool = mysql.createPool(dbConfig);
+        if (typeof cb === 'function') {
+            setTimeout(function() {
+                cb();
+            }, 1)
+        }
     }
     // @overridden BaseServiceClass#criteriaQuery
     criteriaQuery(criteria, callback) {
@@ -67,17 +81,18 @@ class MysqlService extends BaseServiceClass {
 
         var countRecords = function(cb) {
 
-            if (!criteria.paged && !criteria.countRecords) {
+            if (!criteria.paged || !criteria.countRecords) {
                 return cb(null, ROWS_LENGTH);
             }
-            var countSql = "SELECT count(*) records FROM (" + sql + ") A";
+            
+            var countSql = that.getCountSql(sql, params);
 
-            that.pool.query(countSql, params, function(err, result) {
+            that.pool.query(countSql.sql, countSql.params, function(err, result) {
                 if (err) {
                     return cb(err);
                 }
                 if (!result.length) {
-                    return cb(new Error('Invalid count sql.'));
+                    return cb(null, 0);
                 }
                 cb(null, result[0]['records']);
             });

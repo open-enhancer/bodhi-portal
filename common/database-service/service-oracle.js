@@ -1,3 +1,11 @@
+/**
+ * Copyright © 2021 Wuyuan Info Tech Co., Ltd. All rights reserved.
+ * License: MIT
+ * Site: https://wuyuan.io
+ * Author: zyz
+ * Updated: 2020/12/30
+ **/
+
 'use strict';
 
 var BaseServiceClass = require('./service-base');
@@ -37,7 +45,7 @@ var varTypeMap = {
 };
 
 class OracleService extends BaseServiceClass {
-    constructor(dbConfig) {
+    constructor(dbConfig, cb) {
         super(dbConfig);
         dbConfig.connectString = dbConfig.host + '/' + dbConfig.database;
         dbConfig.poolMax = parseInt(dbConfig.connectionLimit) || 10;
@@ -47,10 +55,16 @@ class OracleService extends BaseServiceClass {
             if (err) {
                 console.error('Failed to create connection pool for oracle. Caused by:');
                 console.error(err);
+                if (typeof cb === 'function') {
+                    return cb(err);
+                }
                 return;
             }
-            console.log('Oracle Connection Pool is created.');
+
             that.pool = pool;
+            if (typeof cb === 'function') {
+                cb();
+            }
         });
     }
     // @overridden BaseServiceClass#criteriaQuery
@@ -62,16 +76,16 @@ class OracleService extends BaseServiceClass {
         var ROWS_LENGTH = 'ROWS_LENGTH';
 
         var countRecords = function(cb) {
-            if (!criteria.paged && !criteria.countRecords) {
+            if (!criteria.paged || !criteria.countRecords) {
                 return cb(null, ROWS_LENGTH);
             }
-            var countSql = "SELECT COUNT(*) RECORDS FROM (" + sql + ") A";
-
+            
+            var countSql = that.getCountSql(sql, params, ':var');
             that.pool.getConnection(function(err, conn) {
                 if (err) {
                     return (err);
                 }
-                conn.execute(countSql, params, {
+                conn.execute(countSql.sql, countSql.params, {
                     outFormat: oracledb.OBJECT
                 }, function(err, result) {
                     conn && conn.release();
@@ -79,7 +93,7 @@ class OracleService extends BaseServiceClass {
                         return cb(err);
                     }
                     if (!result.rows.length) {
-                        return cb(new Error('Invalid count sql.'));
+                        return cb(null, 0);
                     }
 
                     cb(null, result.rows[0]['RECORDS']);
@@ -92,6 +106,7 @@ class OracleService extends BaseServiceClass {
                 sql = sql + " ORDER BY " + criteria.sortBy;
             }
             if ( criteria.paged === true ) {
+                criteria.rowNum = parseInt(criteria.rowNum) || 1;
                 var start = ( criteria.page - 1 ) * criteria.rowNum;
                 var end = start + criteria.rowNum + 1;
                 sql = ' SELECT * FROM (SELECT A.*, rownum r__ FROM ('

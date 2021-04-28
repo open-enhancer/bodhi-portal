@@ -1,4 +1,12 @@
 /**
+ * Copyright © 2021 Wuyuan Info Tech Co., Ltd. All rights reserved.
+ * License: MIT
+ * Site: https://wuyuan.io
+ * Author: zyz
+ * Updated: 2020/12/30
+ **/
+
+/*
  * Database Service Class
  * @param databaseConfiguration {Object} Database configuration
  *  eg: 
@@ -11,21 +19,47 @@
           "port": "3306",
           "database": "my_db",
           "user": "zyz",
-          "password": "123456",
+          "password": "passw0rd",
           "acquireTimeout": "1000",
           "connectionLimit": "100",
           "queueLimit": "20"
         }
       }
     }
- */
-function DatabaseService(databaseConfiguration) {
-    this.config = databaseConfiguration;
-    this.services = {};
-
+  * @param cb {Function} callback
+  */
+function DatabaseService(databaseConfiguration, cb) {
+    var that = this;
+    that.config = databaseConfiguration;
+    that.services = {};
+    var marks = {};
+    var isAllCompleted = function() {
+        for (var i in marks) {
+            if (!marks[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
     // Prepare services first, to avoid for using dataservice before it is not ready.
-    for (var i in this.config.connections) {
-      this.getService(i);
+    for (var i in that.config.connections) {
+        marks[i] = false;
+        (function(cname) {
+            that.getService(cname, function(err) {
+                if (err) {
+                    console.error('Failed to create database connection pool', cname, '. Caused by:');
+                    console.error(err);
+                    return
+                }
+                marks[cname] = true;
+                console.log('Database connection pool', cname, 'is created.');
+                if (isAllCompleted()) {
+                    if (typeof cb === 'function') {
+                        cb(null, that);
+                    }
+                }
+            });
+        })(i);
     }
 }
 
@@ -53,7 +87,7 @@ DatabaseService.prototype = {
         service.criteriaQuery(criteria, callback);
     },
 
-    getService: function(connectionName) {
+    getService: function(connectionName, cb) {
         if (!connectionName) {
             connectionName = this.config.default;
         }
@@ -67,7 +101,7 @@ DatabaseService.prototype = {
         }
         var databaseType = dbConfig.databaseType || 'mysql';
         var Service = require('./service-' + databaseType);
-        this.services[connectionName] = new Service(dbConfig);
+        this.services[connectionName] = new Service(dbConfig, cb);
         return this.services[connectionName];
     },
 
@@ -108,14 +142,17 @@ DatabaseService.prototype = {
     }
 };
 
-var dbconfig = {
-    default: '__default__',
-    connections: {
-        __default__: require('../../config/system').database
-    }
+var bodhi = require('../core/bodhi');
+var instance = new DatabaseService(bodhi.getDatabaseConfig(), function(err) {
+    process.nextTick(function() {
+        if (typeof DatabaseService.onInit === 'function') {
+            DatabaseService.onInit(err);
+        }
+    });
+});
+
+DatabaseService.getInstance = function() {
+    return instance;
 };
 
-var instance = new DatabaseService(dbconfig);
-
-
-module.exports = instance;
+module.exports = DatabaseService;
