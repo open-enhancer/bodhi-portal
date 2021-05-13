@@ -141,9 +141,13 @@ DatabaseService.prototype = {
         dbService.getConnection(callback);
     }
 };
-
-var bodhi = require('../core/bodhi');
-var instance = new DatabaseService(bodhi.getDatabaseConfig(), function(err) {
+var dbconfig = {
+    default: '__default__',
+    connections: {
+        __default__: require('../../config/system').database
+    }
+};
+var instance = new DatabaseService(dbconfig, function(err) {
     process.nextTick(function() {
         if (typeof DatabaseService.onInit === 'function') {
             DatabaseService.onInit(err);
