@@ -2,7 +2,7 @@ var systemConfig = require('../config/system');
 var log4js = require('log4js');
 var logger = log4js.getLogger('user');
 var captcha = require('enhancer-captcha');
-var dbservice = require('../common/database-service');
+var dbservice = require('../common/database-service').getInstance();
 
 var loginSettings = systemConfig.login;
 
