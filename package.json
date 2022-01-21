@@ -18,7 +18,7 @@
     "express-useragent": "1.0.12",
     "finalhandler": "^1.1.1",
     "graceful": "^1.0.0",
-    "log4js": "^0.6.27",
+    "log4js": "^6.4.0",
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
     "mssql": "^4.1.0",
