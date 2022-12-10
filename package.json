@@ -13,7 +13,7 @@
     "enhancer-captcha": "^0.0.3",
     "enhancer-recluster": "^0.4.6",
     "escape-html": "^1.0.3",
-    "express": "~4.16.3",
+    "express": "~4.17.3",
     "express-session": "^1.12.1",
     "express-useragent": "1.0.12",
     "finalhandler": "^1.1.1",
